@@ -1,7 +1,7 @@
+import resolve from '@rollup/plugin-node-resolve';
+import replace from '@rollup/plugin-replace';
 import svelte from 'rollup-plugin-svelte';
-import resolve from 'rollup-plugin-node-resolve';
 import css from 'rollup-plugin-css-only';
-import replace from 'rollup-plugin-replace';
 
 export default [
     {

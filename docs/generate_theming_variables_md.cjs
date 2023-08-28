@@ -4,10 +4,10 @@ const path = require("path");
 const { find } = require("find-in-files");
 
 const VARIABLE_USAGE_PATTERN = "var\\(--([A-Za-z\\-_]*)";
-const SOURCE_FOLDER = path.join(__dirname, "..", "src/lib");
+const SOURCE_FOLDER = path.join(__dirname, "..", "src", "lib");
 
 const DOC_FILE_PATH = path.join(__dirname, "theming_variables.md");
-const VARIABLE_SECTION_PATTERN = /(<!-- List start -->)(.|\n)*(<!-- List end -->)/gm;
+const VARIABLE_SECTION_PATTERN = new RegExp('(<!-- List start -->)(.|\\n)*(<!-- List end -->)', 'gm');
 
 (async () => {
   const searchResults = await find(
@@ -35,7 +35,9 @@ const VARIABLE_SECTION_PATTERN = /(<!-- List start -->)(.|\n)*(<!-- List end -->
     ...matchesAsMarkdownListItems,
     END_TAG_CAPTURE_GROUP
   ].join("\n");
-  const oldContent = fs.readFileSync(DOC_FILE_PATH).toString();
+
+  const oldContent = fs.readFileSync(DOC_FILE_PATH, 'utf8').toString();
+	// this is broken for whatever reason on windows.
   const oldFileDoesNotContainSection =
     oldContent.search(VARIABLE_SECTION_PATTERN) === -1;
   if (oldFileDoesNotContainSection) {

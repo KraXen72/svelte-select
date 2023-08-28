@@ -739,42 +739,13 @@
     </div>
 
     <div class="value-container">
-        {#if hasValue}
-            {#if multiple}
-                {#each value as item, i}
-                    <div
-                        class="multi-item"
-                        class:active={activeValue === i}
-                        class:disabled
-                        on:click|preventDefault={() => (multiFullItemClearable ? handleMultiItemClear(i) : {})}
-                        on:keydown|preventDefault|stopPropagation
-                        role="none">
-                        <span class="multi-item-text">
-                            <slot name="selection" selection={item} index={i}>
-                                {item[label]}
-                            </slot>
-                        </span>
-
-                        {#if !disabled && !multiFullItemClearable && ClearIcon}
-                            <div
-                                class="multi-item-clear"
-                                on:pointerup|preventDefault|stopPropagation={() => handleMultiItemClear(i)}>
-                                <slot name="multi-clear-icon">
-                                    <ClearIcon />
-                                </slot>
-                            </div>
-                        {/if}
-                    </div>
-                {/each}
-            {:else}
-                <div class="selected-item" class:hide-selected-item={hideSelectedItem}>
-                    <slot name="selection" selection={value}>
-                        {value[label]}
-                    </slot>
-                </div>
-            {/if}
-        {/if}
-
+		{#if hasValue && !multiple}
+			<div class="selected-item" class:hide-selected-item={hideSelectedItem}>
+				<slot name="selection" selection={value}>
+					{value[label]}
+				</slot>
+			</div>
+		{/if}
         <input
             on:keydown={handleKeyDown}
             on:blur={handleBlur}
@@ -823,6 +794,36 @@
             <select class="required" required tabindex="-1" aria-hidden="true" />
         </slot>
     {/if}
+</div>
+
+<div class="multi-item-container">
+	{#if hasValue && multiple}
+			{#each value as item, i}
+				<div
+					class="multi-item"
+					class:active={activeValue === i}
+					class:disabled
+					on:click|preventDefault={() => (multiFullItemClearable ? handleMultiItemClear(i) : {})}
+					on:keydown|preventDefault|stopPropagation
+					role="none">
+					<span class="multi-item-text">
+						<slot name="selection" selection={item} index={i}>
+							{item[label]}
+						</slot>
+					</span>
+
+					{#if !disabled && !multiFullItemClearable && ClearIcon}
+						<div
+							class="multi-item-clear"
+							on:pointerup|preventDefault|stopPropagation={() => handleMultiItemClear(i)}>
+							<slot name="multi-clear-icon">
+								<ClearIcon />
+							</slot>
+						</div>
+					{/if}
+				</div>
+			{/each}
+		{/if}
 </div>
 
 <style>
@@ -1062,7 +1063,13 @@
         position: relative;
         margin: var(--multi-select-input-margin, 5px 0);
         flex: 1 1 40px;
-    }
+	}
+
+	.multi-item-container {
+		display: flex;
+		padding: 0.5rem 0;
+		column-gap: 0.5rem;
+	}
 
     .svelte-select.error {
         border: var(--error-border, 1px solid #ff2d55);

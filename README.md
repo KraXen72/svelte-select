@@ -13,6 +13,13 @@
 </div>
 <div align="center">A select/autocomplete/typeahead Svelte component.</div>
 
+## This fork
+- uses `pnpm`
+- updates dependencies to their latest minor version
+- uses `@rollup/` plugins instead of legacy `rollup-` plugins (where applicable)
+- moves the `.multi-item` elements outside of the main wrapper component
+- fixes & sync-ifies `remove-styles.cjs` (now works on windows too)
+
 ## Demos
 
 [💥 Examples of every prop, event, slot and more 💥](https://svelte-select-examples.vercel.app)
